@@ -24,36 +24,26 @@ git pull
 git checkout -b new_branch source_branch
 ```
 -----
-#### Updating Your Branch from the Source Branch
+#### Updating Your Branch from the Source Branch using `git merge`
 
-In Git, you can update your branch (`new_branch`) from the source branch (`source_branch`) without affecting your local changes by following these steps:
+To update your branch (`new_branch`) from the source branch (`source_branch`) using `git merge` with a custom commit message, follow these steps:
 
 ##### Syntax
 ```bash
-# To pull and rebase from the source branch
-git pull --rebase source_branch
+# Merge changes from the source branch into your current branch with a custom commit message
+git merge source_branch -m "Get the latest changes from source_branch"
 ```
 
 ##### Explanation
-- `git pull --rebase`: This command updates your branch by pulling the latest changes from the source branch and then rebasing your local changes on top of those changes.
-- `source_branch`: The name of the source branch from which you want to pull updates.
+- `git merge`: Merges changes from the source branch into your current branch.
+- `source_branch`: The name of the source branch from which you want to merge changes.
+- `-m "Get the latest changes from source_branch"`: The option to include a custom commit message that describes the purpose of the merge.
 
 ##### Common Use Cases
 ```bash
 # Step 1: Ensure you are on your local branch (new_branch)
 git checkout new_branch
 
-# Step 2: Pull the latest changes from the source branch to synchronize
-git pull source_branch
-
-# Step 3: If there are conflicts during the pull operation, resolve them.
-
-# Step 4: Once your branch is synchronized, rebase your local changes on top of it
-git pull --rebase source_branch
-
-# Step 5: Review your changes to ensure they are still intact.
-
-# Step 6: If everything looks good, push your branch to the remote repository
-git push origin new_branch
+# Step 2: Merge changes from the source branch into your current branch with a custom commit message
+git merge source_branch -m "Custom commit message"
 ```
-----
