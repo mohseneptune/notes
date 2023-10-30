@@ -89,6 +89,76 @@ In this example, `Generic[T]` indicates that the `Box` class is generic and can 
 
 By using generic types, you can create adaptable, clear, and error-resistant code across different data types and contexts.
 
+
+**TypeVar:**<br> `TypeVar` is a valuable tool when you want to introduce a type variable in your code. It's often used in conjunction with the `Generic` class to create generic types for classes, functions, and methods. You typically use `TypeVar` when:
+- You want to specify that a particular type is expected, allowing for flexibility in your code.
+- You need to define constraints on the type, ensuring that it inherits from a specific base class or has specific attributes.
+
+**Generic:**<br> The `Generic` class is used when you need to create generic classes, functions, or methods. You should use `Generic` when:
+- You want to create reusable components that can work with different data types.
+- You need to parameterize classes or functions to work with specific types.
+
+**Example**:
+```python
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
+
+class Box(Generic[T]):
+    def __init__(self, value: T):
+        self.value = value
+```
+
+In this example, the `Box` class is a generic class that can contain values of any type specified when creating an instance.
+
+**Example**:
+```python
+from typing import TypeVar, Generic
+
+# Defining a TypeVar with a bound
+T = TypeVar('T', int, float)
+
+class Container(Generic[T]):
+    def __init__(self, value: T):
+        self.value = value
+
+# Usage
+int_container = Container(42)
+float_container = Container(3.14)
+```
+
+In this example, the `TypeVar` `T` is defined with a `bound` of `int` and `float`. This means that `T` must be either an `int` or a `float`, and you cannot use this `TypeVar` with any other data type.
+
+`bound` is used with `TypeVar` to specify the allowed types for the generic parameter, ensuring that it can only be assigned values of those types. It's particularly helpful when you want to provide strict type constraints in your generic classes or functions.
+
+
+- You use `bound` when you want to restrict the type that can be assigned to a `TypeVar`. This can be useful when you want to ensure that a generic class or function works with a specific set of types, providing type safety.
+
+- In the example, `T` is constrained to `int` and `float`. This ensures that the `Container` class can only be instantiated with integers or floating-point numbers.
+
+- Using `bound` can be valuable for creating more precise and self-documenting type hints in your code, as it clearly communicates the intended constraints on the generic type. It helps prevent unintended or erroneous usages of the `TypeVar`.
+
+**Type:**<br> `Type` is used to refer to the type of a class or object. It is often used when you want to:
+
+- Annotate a variable to specify that it should hold a reference to a class (not an instance of the class).
+- Create self-documenting code, especially when using type hints with classes or metaclasses.
+
+**Example**:
+
+```python
+from typing import Type
+
+class MyType:
+    pass
+
+class AnotherType:
+    pass
+
+my_var: Type[MyType] = MyType  # my_var can reference the MyType class
+```
+
+Here, `my_var` is annotated as `Type[MyType]`, indicating that it should hold a reference to the `MyType` class.
+
 -------
 
 ## Advanced Type Hinting:
@@ -106,14 +176,20 @@ Type hinting best practices include guidelines for naming conventions, when and 
 ## Duck Typing vs. Type Hinting:
 Understanding the difference between duck typing (where types are determined by behavior) and type hinting (where types are explicitly specified) is important for choosing the right approach in your code.
 
-## Type Hinting in Python Ecosystem:
-Exploring how type hinting is adopted and used in various Python projects and communities is crucial for following community standards and best practices.
+### Tips for Using Type Hints:
 
-## Type Hinting in Third-Party Libraries:
-Using type hints effectively with third-party libraries and modules ensures consistency and type safety when integrating external code into your projects.
+**When to Use `from __future__ import annotations`**<br> Using `from __future__ import annotations` is a practice to enable postponed evaluation of type annotations in Python 3.7 and later. You should use it when:
 
-## Compatibility with Python Versions:
-Understanding how type hinting works across different Python versions, especially the transition from Python 2 to Python 3, helps you maintain compatibility and migration strategies.
+- You have circular dependencies between classes or functions, and type annotations are causing `NameError` due to immediate evaluation.
+- You want to ensure that type annotations are evaluated at runtime to avoid potential issues with the evaluation order.
 
-## Type Hinting in IDEs:
-Knowing how different Integrated Development Environments (IDEs) support type hinting and provide features and plugins to enhance the coding experience helps you choose the right tools for your projects.
+**Example**:
+
+```python
+from __future__ import annotations
+
+class MyClass:
+    attribute: MyClass  # Using postponed annotations without raising NameError
+```
+
+This import statement helps prevent issues related to annotation evaluation order and circular dependencies in your code.
